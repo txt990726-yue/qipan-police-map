@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>鄂托克旗公安局棋盘井第一派出所辖区互动屏</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="screen-frame">
+      <section class="stage stage-home" id="home-view" aria-label="选择辖区">
+        <header class="hero-copy">
+          <p>鄂托克旗公安局棋盘井第一派出所</p>
+          <h1>辖区警务信息互动屏</h1>
+        </header>
+
+        <div class="jurisdiction-grid">
+          <button class="jurisdiction-card jurisdiction-card--town" type="button" data-map="town">
+            <span class="card-index">01</span>
+            <span class="card-title">镇区辖区</span>
+            <span class="card-meta">5 个社区</span>
+            <img src="assets/town-map.jpg" alt="镇区辖区图预览" />
+          </button>
+
+          <button class="jurisdiction-card jurisdiction-card--rural" type="button" data-map="rural">
+            <span class="card-index">02</span>
+            <span class="card-title">农牧区辖区</span>
+            <span class="card-meta">整体辖区</span>
+            <img src="assets/rural-map.jpg" alt="农牧区辖区图预览" />
+          </button>
+        </div>
+
+        <button class="fullscreen-button" type="button">全屏</button>
+      </section>
+
+      <section class="stage stage-map" id="map-view" hidden aria-label="选择社区">
+        <header class="map-header">
+          <button class="nav-button back-button" type="button" aria-label="返回辖区选择">‹</button>
+          <div>
+            <p id="map-subtitle">请选择社区</p>
+            <h1 id="screen-title"></h1>
+          </div>
+          <button class="fullscreen-button" type="button">全屏</button>
+        </header>
+
+        <div class="map-layout">
+          <div class="map-stage">
+            <img id="active-map" alt="" />
+            <svg class="hotspot-layer" viewBox="0 0 1610 1280" preserveAspectRatio="none" aria-label="可点击区域">
+              <g id="hotspot-shapes"></g>
+            </svg>
+            <div id="map-labels" class="map-labels"></div>
+          </div>
+
+          <aside class="region-menu">
+            <p>社区列表</p>
+            <div id="region-buttons" class="region-buttons"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <aside class="director-panel" id="director-panel" aria-live="polite" hidden>
+      <button class="close-button" type="button" aria-label="关闭信息">×</button>
+      <p id="panel-map-name" class="panel-kicker"></p>
+      <h2 id="panel-title"></h2>
+      <article class="director-card" id="director-card"></article>
+    </aside>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
