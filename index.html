@@ -18,38 +18,53 @@
         <div class="backdrop-grid"></div>
       </div>
 
-      <section class="stage stage-home" id="home-view" aria-label="选择辖区">
-        <header class="hero-copy">
+      <section class="stage stage-intro" id="intro-view" aria-label="派出所简介">
+        <header class="hero-copy intro-hero">
           <p>鄂托克旗公安局棋盘井第一派出所</p>
+          <h1>扎根西大门 守护棋盘井</h1>
+        </header>
+
+        <article class="intro-board">
+          <div class="intro-main">
+            <p class="brief-eyebrow">派出所简介</p>
+            <h2>新时代“枫桥经验”在基层警务中的棋盘井实践</h2>
+            <p>
+              棋盘井第一派出所始建于1980年，前身为乌珠尔镇派出所，位于鄂托克旗棋盘井镇核心区域，地处鄂尔多斯市西大门。辖区总面积3614平方公里，常住人口约4.4万人，下辖10个嘎查村、5个社区，集矿区、农区、牧区及城镇建成区为一体。
+            </p>
+            <p>
+              辖区内有厂矿企业109家、个体工商户1533户，人员结构复杂、治安要素多元、服务半径较大。派出所坚持党建引领，聚焦基层治理、矛盾纠纷化解、服务群众和风险防控，持续提升辖区治安管控和便民服务水平。
+            </p>
+            <p>
+              近年来，棋盘井第一派出所紧紧围绕“派出所主防”职能定位，推进警务前移、服务下沉、力量融合，积极打造具有本地特色的基层警务品牌，为辖区经济社会发展和群众安居乐业提供坚实保障。
+            </p>
+          </div>
+
+          <div class="intro-side">
+            <div class="brief-stats intro-stats" aria-label="关键数据">
+              <span><strong>1980</strong>始建年份</span>
+              <span><strong>3614</strong>平方公里</span>
+              <span><strong>4.4万</strong>辖区人口</span>
+              <span><strong>44</strong>现有警力</span>
+              <span><strong>10</strong>嘎查村</span>
+              <span><strong>5</strong>社区</span>
+              <span><strong>109</strong>厂矿企业</span>
+              <span><strong>1533</strong>个体工商户</span>
+            </div>
+            <button class="page-next-button" type="button" data-page-target="area">进入辖区图</button>
+          </div>
+        </article>
+
+        <button class="fullscreen-button" type="button">全屏</button>
+      </section>
+
+      <section class="stage stage-home" id="home-view" hidden aria-label="辖区图">
+        <header class="hero-copy area-hero">
+          <p>第二页 / 辖区图</p>
           <h1>辖区警务信息互动屏</h1>
         </header>
 
-        <aside class="station-brief" aria-label="棋盘井第一派出所简介">
-          <p class="brief-eyebrow">派出所简介</p>
-          <h2>扎根西大门，守护棋盘井</h2>
-          <p class="brief-text">
-            棋盘井第一派出所始建于1980年，前身为乌珠尔镇派出所，辖棋盘井镇核心区域，地处鄂尔多斯市西大门。辖区总面积3614平方公里，人口4.4万，下辖10个嘎查村、5个社区，集矿区、农区、牧区及城镇建成区为一体。
-          </p>
-          <div class="brief-stats" aria-label="关键数据">
-            <span><strong>44</strong>警力</span>
-            <span><strong>3614</strong>平方公里</span>
-            <span><strong>109</strong>厂矿企业</span>
-            <span><strong>1533</strong>个体工商户</span>
-          </div>
-          <p class="brief-note">
-            深入践行新时代“枫桥经验”，聚焦矛盾纠纷化解、便民服务提质、基层平安守护，打造本土化警务特色品牌。
-          </p>
-        </aside>
-
-        <div class="home-actions" aria-label="功能入口">
-          <button class="action-button structure-entry" type="button">
-            <span>组织架构</span>
-            <strong>岗位分工金字塔</strong>
-          </button>
-          <a class="action-button admin-entry" href="admin.html" target="_blank" rel="noopener">
-            <span>后台管理</span>
-            <strong>录入人员与照片</strong>
-          </a>
+        <div class="area-copy">
+          <p>选择镇区辖区或农牧区辖区，进入地图后可点击社区或区域，查看对应负责人信息。</p>
         </div>
 
         <div class="jurisdiction-grid">
@@ -73,7 +88,7 @@
 
       <section class="stage stage-map" id="map-view" hidden aria-label="选择社区">
         <header class="map-header">
-          <button class="nav-button back-button" type="button" aria-label="返回辖区选择">‹</button>
+          <button class="nav-button back-button" type="button" aria-label="返回辖区图">‹</button>
           <div>
             <p id="map-subtitle">请选择社区</p>
             <h1 id="screen-title"></h1>
@@ -99,9 +114,9 @@
 
       <section class="stage stage-structure" id="structure-view" hidden aria-label="组织架构">
         <header class="map-header">
-          <button class="nav-button structure-back-button" type="button" aria-label="返回首页">‹</button>
+          <button class="nav-button structure-back-button" type="button" aria-label="返回辖区图">‹</button>
           <div>
-            <p>单位分工思维导图</p>
+            <p>第三页 / 单位分工思维导图</p>
             <h1>组织架构与岗位分工</h1>
           </div>
           <button class="fullscreen-button" type="button">全屏</button>
@@ -127,6 +142,24 @@
           </div>
         </div>
       </section>
+
+      <nav class="page-tabs" aria-label="页面切换">
+        <button class="page-tab is-active" type="button" data-page-target="intro">
+          <span>01</span>
+          简介
+        </button>
+        <button class="page-tab" type="button" data-page-target="area">
+          <span>02</span>
+          辖区图
+        </button>
+        <button class="page-tab" type="button" data-page-target="structure">
+          <span>03</span>
+          分工金字塔
+        </button>
+        <a class="page-tab page-tab--admin" href="admin.html" target="_blank" rel="noopener">
+          后台
+        </a>
+      </nav>
     </main>
 
     <aside class="director-panel" id="director-panel" aria-live="polite" hidden>

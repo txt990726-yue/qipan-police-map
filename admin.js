@@ -1,4 +1,5 @@
 const form = document.querySelector("#admin-form");
+const sectionNav = document.querySelector("#admin-section-nav");
 const saveLocalButton = document.querySelector("#save-local");
 const resetLocalButton = document.querySelector("#reset-local");
 const exportButton = document.querySelector("#export-js");
@@ -21,23 +22,34 @@ function loadData() {
 
 function renderForm() {
   form.innerHTML = "";
+  sectionNav.innerHTML = "";
   personnelData.organization.forEach((level, levelIndex) => {
+    const navLink = document.createElement("a");
+    navLink.href = `#admin-section-${level.id}`;
+    navLink.innerHTML = `<span>${String(levelIndex + 1).padStart(2, "0")}</span>${level.title}`;
+    sectionNav.appendChild(navLink);
+
     const section = document.createElement("section");
     section.className = "admin-section";
+    section.id = `admin-section-${level.id}`;
     section.innerHTML = `<h2>${level.title}<span>${level.subtitle}</span></h2>`;
 
     level.positions.forEach((position, positionIndex) => {
       const card = document.createElement("article");
       card.className = "admin-person-card";
       card.innerHTML = `
-        <div class="admin-photo-preview">${position.photo ? `<img src="${position.photo}" alt="${position.name}照片" />` : "照片"}</div>
+        <div class="admin-card-head">
+          <span>${String(positionIndex + 1).padStart(2, "0")}</span>
+          <strong>${position.title || "岗位"}</strong>
+        </div>
+        <div class="admin-photo-preview">${position.photo ? `<img src="${position.photo}" alt="${position.name}照片" />` : "<span>照片</span>"}</div>
         <div class="admin-fields">
           <label>岗位<input data-field="title" data-level="${levelIndex}" data-position="${positionIndex}" value="${escapeAttr(position.title || "")}" /></label>
           <label>姓名<input data-field="name" data-level="${levelIndex}" data-position="${positionIndex}" value="${escapeAttr(position.name || "")}" /></label>
-          <label>电话<input data-field="phone" data-level="${levelIndex}" data-position="${positionIndex}" value="${escapeAttr(position.phone || "")}" /></label>
+          <label>电话<input data-field="phone" data-level="${levelIndex}" data-position="${positionIndex}" value="${escapeAttr(position.phone || "")}" placeholder="待录入" /></label>
           <label>职责<textarea data-field="duty" data-level="${levelIndex}" data-position="${positionIndex}">${position.duty || ""}</textarea></label>
-          <label>组员<textarea data-field="members" data-level="${levelIndex}" data-position="${positionIndex}" placeholder="多个姓名用顿号或逗号分隔">${(position.members || []).join("、")}</textarea></label>
-          <label>照片<input type="file" accept="image/*" data-field="photo" data-level="${levelIndex}" data-position="${positionIndex}" /></label>
+          <label>组员<textarea data-field="members" data-level="${levelIndex}" data-position="${positionIndex}" placeholder="多个姓名用顿号、逗号或换行分隔">${(position.members || []).join("、")}</textarea></label>
+          <label class="admin-file-field">照片<input type="file" accept="image/*" data-field="photo" data-level="${levelIndex}" data-position="${positionIndex}" /></label>
         </div>
       `;
       section.appendChild(card);

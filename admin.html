@@ -17,8 +17,8 @@
       </header>
 
       <section class="admin-notice">
-        <strong>说明</strong>
-        <span>这是静态网页后台：可在当前浏览器保存预览，也可导出 `personnel-data.js` 文件，后续同步到线上后所有人才能看到。</span>
+        <strong>静态维护</strong>
+        <span>在这里录入人员、电话、职责和照片；先保存到本机预览，确认后导出数据文件用于线上同步。</span>
       </section>
 
       <section class="admin-toolbar">
@@ -27,7 +27,13 @@
         <button id="export-js" type="button">导出人员数据文件</button>
       </section>
 
-      <form id="admin-form" class="admin-form"></form>
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <p>岗位分组</p>
+          <nav id="admin-section-nav" class="admin-section-nav" aria-label="岗位分组"></nav>
+        </aside>
+        <form id="admin-form" class="admin-form"></form>
+      </div>
     </main>
 
     <script src="personnel-data.js"></script>

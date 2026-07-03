@@ -115,6 +115,7 @@ const maps = {
   }
 };
 
+const introView = document.querySelector("#intro-view");
 const homeView = document.querySelector("#home-view");
 const mapView = document.querySelector("#map-view");
 const structureView = document.querySelector("#structure-view");
@@ -123,7 +124,9 @@ const screenTitle = document.querySelector("#screen-title");
 const mapSubtitle = document.querySelector("#map-subtitle");
 const backButton = document.querySelector(".back-button");
 const structureBackButton = document.querySelector(".structure-back-button");
-const structureEntry = document.querySelector(".structure-entry");
+const pageTargets = document.querySelectorAll("[data-page-target]");
+const pageTabs = document.querySelectorAll(".page-tab[data-page-target]");
+const pageNav = document.querySelector(".page-tabs");
 const fullscreenButtons = document.querySelectorAll(".fullscreen-button");
 const hotspotShapes = document.querySelector("#hotspot-shapes");
 const mapLabels = document.querySelector("#map-labels");
@@ -137,6 +140,7 @@ const panelTitle = document.querySelector("#panel-title");
 const directorCard = document.querySelector("#director-card");
 
 let currentMap = null;
+let currentPage = "intro";
 
 function getPersonnelData() {
   try {
@@ -148,19 +152,43 @@ function getPersonnelData() {
   return window.DEFAULT_PERSONNEL_DATA;
 }
 
+function setActiveTab(page) {
+  currentPage = page;
+  pageTabs.forEach((tab) => {
+    tab.classList.toggle("is-active", tab.dataset.pageTarget === page);
+  });
+}
+
+function showIntro() {
+  currentMap = null;
+  introView.hidden = false;
+  homeView.hidden = true;
+  mapView.hidden = true;
+  structureView.hidden = true;
+  pageNav.hidden = false;
+  setActiveTab("intro");
+  closePanel();
+}
+
 function showHome() {
   currentMap = null;
+  introView.hidden = true;
   homeView.hidden = false;
   mapView.hidden = true;
   structureView.hidden = true;
+  pageNav.hidden = false;
+  setActiveTab("area");
   closePanel();
 }
 
 function showMap(mapId) {
   currentMap = maps[mapId];
+  introView.hidden = true;
   homeView.hidden = true;
   mapView.hidden = false;
   structureView.hidden = true;
+  pageNav.hidden = true;
+  setActiveTab("area");
   screenTitle.textContent = currentMap.title;
   mapSubtitle.textContent = currentMap.subtitle;
   activeMap.src = currentMap.image;
@@ -170,11 +198,26 @@ function showMap(mapId) {
 }
 
 function showStructure() {
+  introView.hidden = true;
   homeView.hidden = true;
   mapView.hidden = true;
   structureView.hidden = false;
+  pageNav.hidden = false;
+  setActiveTab("structure");
   renderPyramid();
   closePanel();
+}
+
+function showPage(page) {
+  if (page === "intro") {
+    showIntro();
+    return;
+  }
+  if (page === "structure") {
+    showStructure();
+    return;
+  }
+  showHome();
 }
 
 function renderRegions() {
@@ -329,7 +372,15 @@ homeView.addEventListener("click", (event) => {
   }
 });
 
-structureEntry.addEventListener("click", showStructure);
+pageTargets.forEach((target) => {
+  target.addEventListener("click", (event) => {
+    const page = event.currentTarget.dataset.pageTarget;
+    if (page) {
+      showPage(page);
+    }
+  });
+});
+
 backButton.addEventListener("click", showHome);
 structureBackButton.addEventListener("click", showHome);
 closeButton.addEventListener("click", closePanel);
@@ -351,7 +402,11 @@ document.addEventListener("keydown", (event) => {
       closePanel();
       return;
     }
+    if (!introView.hidden) {
+      return;
+    }
     if (!homeView.hidden) {
+      showIntro();
       return;
     }
     showHome();
