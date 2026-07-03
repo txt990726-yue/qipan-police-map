@@ -305,8 +305,8 @@ h3 {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(6, 17, 30, 0.88), rgba(6, 17, 30, 0.54) 42%, rgba(6, 17, 30, 0.12)),
-    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.18) 100%);
+    linear-gradient(90deg, rgba(6, 17, 30, 0.74), rgba(6, 17, 30, 0.38) 45%, rgba(6, 17, 30, 0.1)),
+    linear-gradient(180deg, transparent 0%, rgba(5, 13, 24, 0.78) 100%);
 }
 
 .jurisdiction-card::after {
@@ -336,7 +336,7 @@ h3 {
 .card-title,
 .card-meta {
   position: absolute;
-  left: 5.8%;
+  left: 5.6%;
   z-index: 3;
 }
 
@@ -348,22 +348,28 @@ h3 {
 }
 
 .card-title {
-  bottom: 22%;
-  font-size: clamp(34px, 4vw, 72px);
+  right: 5.6%;
+  bottom: 19.5%;
+  font-size: clamp(30px, 3.05vw, 56px);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.04;
+  white-space: nowrap;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
 }
 
 .card-meta {
-  bottom: 11%;
-  min-width: 8.5vw;
+  bottom: 9%;
+  min-width: 7.6vw;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 8px;
-  padding: 0.72vw 1vw;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--muted);
-  font-size: clamp(17px, 1.45vw, 28px);
+  padding: 0.48vw 0.78vw;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(247, 251, 255, 0.82);
+  font-size: clamp(14px, 1.02vw, 20px);
   font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  backdrop-filter: blur(8px);
 }
 
 .fullscreen-button {
