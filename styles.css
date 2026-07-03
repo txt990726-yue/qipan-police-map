@@ -75,7 +75,7 @@ button {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  filter: saturate(0.92) contrast(1.06) brightness(0.78);
+  filter: saturate(1.02) contrast(1.04) brightness(0.96);
   transform: scale(1.045);
   animation: photoCycle 35s infinite;
 }
@@ -99,24 +99,24 @@ button {
 .backdrop-mask {
   z-index: 2;
   background:
-    linear-gradient(90deg, rgba(5, 13, 24, 0.94) 0%, rgba(5, 13, 24, 0.78) 38%, rgba(5, 13, 24, 0.88) 100%),
-    linear-gradient(180deg, rgba(5, 13, 24, 0.18), rgba(5, 13, 24, 0.66)),
-    radial-gradient(circle at 72% 28%, rgba(205, 45, 45, 0.18), transparent 28%),
-    radial-gradient(circle at 18% 82%, rgba(58, 201, 213, 0.14), transparent 30%);
+    linear-gradient(90deg, rgba(5, 13, 24, 0.78) 0%, rgba(5, 13, 24, 0.56) 38%, rgba(5, 13, 24, 0.62) 100%),
+    linear-gradient(180deg, rgba(5, 13, 24, 0.08), rgba(5, 13, 24, 0.42)),
+    radial-gradient(circle at 72% 28%, rgba(205, 45, 45, 0.14), transparent 30%),
+    radial-gradient(circle at 18% 82%, rgba(58, 201, 213, 0.12), transparent 32%);
 }
 
 .backdrop-mask::before {
   content: "";
   position: absolute;
   inset: 7% 5%;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  box-shadow: inset 0 0 80px rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 70px rgba(255, 255, 255, 0.045);
 }
 
 .backdrop-grid {
   z-index: 3;
-  opacity: 0.45;
+  opacity: 0.28;
   background:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
@@ -131,7 +131,7 @@ button {
   }
   5%,
   19% {
-    opacity: 0.78;
+    opacity: 0.9;
   }
   25%,
   100% {
@@ -220,8 +220,8 @@ h3 {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(6, 17, 30, 0.95), rgba(6, 17, 30, 0.72) 44%, rgba(6, 17, 30, 0.26)),
-    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+    linear-gradient(90deg, rgba(6, 17, 30, 0.88), rgba(6, 17, 30, 0.54) 42%, rgba(6, 17, 30, 0.12)),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.18) 100%);
 }
 
 .jurisdiction-card::after {
@@ -243,7 +243,7 @@ h3 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.74;
+  opacity: 0.88;
   transform: scale(1.04);
 }
 
