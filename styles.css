@@ -164,7 +164,7 @@ button {
 }
 
 .hero-copy {
-  width: 68%;
+  width: 56%;
 }
 
 .hero-copy p,
@@ -191,15 +191,100 @@ h3 {
   text-shadow: 0 12px 34px rgba(0, 0, 0, 0.56);
 }
 
+.station-brief {
+  position: absolute;
+  top: 11.2%;
+  right: 3.4%;
+  z-index: 5;
+  width: 38.5%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 1.25vw 1.35vw;
+  background:
+    linear-gradient(135deg, rgba(8, 21, 34, 0.66), rgba(8, 21, 34, 0.42)),
+    rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 62px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
+}
+
+.station-brief::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(58, 201, 213, 0.18), transparent 42%, rgba(216, 170, 69, 0.12));
+  opacity: 0.9;
+}
+
+.station-brief > * {
+  position: relative;
+  z-index: 1;
+}
+
+.brief-eyebrow {
+  margin: 0 0 0.35vw;
+  color: var(--gold);
+  font-size: clamp(13px, 0.95vw, 18px);
+  font-weight: 900;
+}
+
+.station-brief h2 {
+  margin: 0 0 0.72vw;
+  color: #fff;
+  font-size: clamp(22px, 1.75vw, 34px);
+  line-height: 1.16;
+}
+
+.brief-text,
+.brief-note {
+  margin: 0;
+  color: rgba(247, 251, 255, 0.84);
+  font-size: clamp(13px, 0.98vw, 18px);
+  line-height: 1.72;
+}
+
+.brief-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5vw;
+  margin: 0.95vw 0;
+}
+
+.brief-stats span {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 0.58vw 0.5vw;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(247, 251, 255, 0.76);
+  font-size: clamp(11px, 0.74vw, 14px);
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.brief-stats strong {
+  display: block;
+  margin-bottom: 0.16vw;
+  color: #fff;
+  font-size: clamp(20px, 1.5vw, 30px);
+  line-height: 1;
+}
+
+.brief-note {
+  color: rgba(220, 230, 240, 0.78);
+}
+
 .jurisdiction-grid {
   position: absolute;
   left: 3.4%;
   right: 3.4%;
-  bottom: 5.4%;
+  bottom: 4.6%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2.2%;
-  height: 58%;
+  height: 43%;
 }
 
 .jurisdiction-card {
