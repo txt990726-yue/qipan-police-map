@@ -41,6 +41,17 @@
           </p>
         </aside>
 
+        <div class="home-actions" aria-label="功能入口">
+          <button class="action-button structure-entry" type="button">
+            <span>组织架构</span>
+            <strong>岗位分工金字塔</strong>
+          </button>
+          <a class="action-button admin-entry" href="admin.html" target="_blank" rel="noopener">
+            <span>后台管理</span>
+            <strong>录入人员与照片</strong>
+          </a>
+        </div>
+
         <div class="jurisdiction-grid">
           <button class="jurisdiction-card jurisdiction-card--town" type="button" data-map="town">
             <span class="card-index">01</span>
@@ -85,6 +96,37 @@
           </aside>
         </div>
       </section>
+
+      <section class="stage stage-structure" id="structure-view" hidden aria-label="组织架构">
+        <header class="map-header">
+          <button class="nav-button structure-back-button" type="button" aria-label="返回首页">‹</button>
+          <div>
+            <p>单位分工思维导图</p>
+            <h1>组织架构与岗位分工</h1>
+          </div>
+          <button class="fullscreen-button" type="button">全屏</button>
+        </header>
+
+        <div class="structure-layout">
+          <aside class="structure-summary">
+            <p class="brief-eyebrow">人员结构</p>
+            <h2>分层管理，职责清晰</h2>
+            <p>
+              以所领导班子统筹全盘工作，下设综合指挥、案件办理、社区警务和基层警务室等岗位层级。点击任一岗位，可查看该岗位负责人、职责和人员信息。
+            </p>
+            <div class="structure-stats">
+              <span><strong>6</strong>所领导</span>
+              <span><strong>3</strong>业务中队</span>
+              <span><strong>5</strong>案件小组</span>
+              <span><strong>6</strong>社区警务</span>
+            </div>
+          </aside>
+
+          <div class="pyramid-panel">
+            <div class="pyramid" id="pyramid"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <aside class="director-panel" id="director-panel" aria-live="polite" hidden>
@@ -96,6 +138,7 @@
 
     <div class="scrim" id="scrim" hidden></div>
 
+    <script src="personnel-data.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

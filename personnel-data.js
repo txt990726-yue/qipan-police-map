@@ -1,0 +1,260 @@
+window.DEFAULT_PERSONNEL_DATA = {
+  version: 1,
+  updatedAt: "2026-07-03",
+  organization: [
+    {
+      id: "leadership",
+      title: "所领导班子",
+      subtitle: "统筹指挥",
+      tone: "gold",
+      positions: [
+        {
+          id: "leader-meng",
+          title: "副所长",
+          name: "孟海军",
+          duty: "分管全盘工作",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "leader-bao",
+          title: "副所长",
+          name: "包泽军",
+          duty: "分管综合指挥室",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "leader-wangwei",
+          title: "副所长",
+          name: "王伟",
+          duty: "分管案件办理中队",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "leader-guo",
+          title: "副所长",
+          name: "郭鑫",
+          duty: "分管社区警务中队",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "leader-yang",
+          title: "副所长",
+          name: "杨勇",
+          duty: "分管信访工作、矛盾纠纷化解、流动警务室",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "leader-xiaoyi",
+          title: "副所长",
+          name: "王晓义",
+          duty: "分管防电信诈骗等工作",
+          phone: "",
+          photo: ""
+        }
+      ]
+    },
+    {
+      id: "core-squads",
+      title: "业务中队",
+      subtitle: "主责部门",
+      tone: "cyan",
+      positions: [
+        {
+          id: "command-office",
+          title: "综合指挥室主任",
+          name: "宿斐鸿",
+          duty: "综合指挥室",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "case-squad",
+          title: "案件办理中队中队长",
+          name: "徐海东",
+          duty: "案件办理中队",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "community-squad",
+          title: "社区警务中队",
+          name: "李洋",
+          duty: "社区警务中队",
+          phone: "",
+          photo: ""
+        }
+      ]
+    },
+    {
+      id: "support",
+      title: "综合内勤与保障",
+      subtitle: "运行支撑",
+      tone: "blue",
+      positions: [
+        {
+          id: "support-wangli",
+          title: "综合后勤",
+          name: "王丽",
+          duty: "综合后勤",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "support-liufengxi",
+          title: "党务内勤",
+          name: "刘逢玺",
+          duty: "党务内勤",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "support-liuyuyang",
+          title: "综合内勤",
+          name: "刘羽洋",
+          duty: "综合内勤",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "support-bianxin",
+          title: "社区中队内勤",
+          name: "边欣",
+          duty: "社区中队内勤",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "support-lijing",
+          title: "案件中队内勤",
+          name: "李静",
+          duty: "案件中队内勤",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "support-gaoxin",
+          title: "车辆、厨房专管民警",
+          name: "高鑫",
+          duty: "车辆、厨房专管民警",
+          phone: "",
+          photo: ""
+        }
+      ]
+    },
+    {
+      id: "case-groups",
+      title: "案件办理小组",
+      subtitle: "执法办案",
+      tone: "orange",
+      positions: [
+        {
+          id: "case-group-1",
+          title: "案件办理一组",
+          name: "康帅",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["赵旭东", "王凯阳"]
+        },
+        {
+          id: "case-group-2",
+          title: "案件办理二组",
+          name: "苏浩",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["朝格莫日根", "张帅"]
+        },
+        {
+          id: "case-group-3",
+          title: "案件办理三组",
+          name: "呼和",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["王鑫隆", "魏宇廷"]
+        },
+        {
+          id: "case-group-4",
+          title: "案件办理四组",
+          name: "刘峰",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["万鹏雪", "王鑫"]
+        },
+        {
+          id: "case-group-5",
+          title: "案件办理五组",
+          name: "俞乐",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["梁占东"]
+        }
+      ]
+    },
+    {
+      id: "community-policing",
+      title: "社区警务与流动警务",
+      subtitle: "基层治理",
+      tone: "green",
+      positions: [
+        {
+          id: "community-wuzhu",
+          title: "乌珠尔社区",
+          name: "王银",
+          duty: "组长",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "community-qipan",
+          title: "棋盘社区",
+          name: "包金柱",
+          duty: "组长",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "community-qixiang",
+          title: "棋祥社区",
+          name: "李洋",
+          duty: "组长",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "community-aili",
+          title: "艾力社区",
+          name: "许丽平",
+          duty: "组长",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "community-jingan",
+          title: "靖安社区",
+          name: "高勇",
+          duty: "组长",
+          phone: "",
+          photo: ""
+        },
+        {
+          id: "anda-office",
+          title: "安达警务室",
+          name: "吴远刚",
+          duty: "组长",
+          phone: "",
+          photo: "",
+          members: ["杨剑", "梁旭", "王帅", "马嘉伟", "王龙", "刘军", "焦二雄", "吉布斯格图"]
+        }
+      ]
+    }
+  ]
+};

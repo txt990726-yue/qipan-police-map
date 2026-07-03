@@ -117,14 +117,18 @@ const maps = {
 
 const homeView = document.querySelector("#home-view");
 const mapView = document.querySelector("#map-view");
+const structureView = document.querySelector("#structure-view");
 const activeMap = document.querySelector("#active-map");
 const screenTitle = document.querySelector("#screen-title");
 const mapSubtitle = document.querySelector("#map-subtitle");
 const backButton = document.querySelector(".back-button");
+const structureBackButton = document.querySelector(".structure-back-button");
+const structureEntry = document.querySelector(".structure-entry");
 const fullscreenButtons = document.querySelectorAll(".fullscreen-button");
 const hotspotShapes = document.querySelector("#hotspot-shapes");
 const mapLabels = document.querySelector("#map-labels");
 const regionButtons = document.querySelector("#region-buttons");
+const pyramid = document.querySelector("#pyramid");
 const directorPanel = document.querySelector("#director-panel");
 const scrim = document.querySelector("#scrim");
 const closeButton = document.querySelector(".close-button");
@@ -134,10 +138,21 @@ const directorCard = document.querySelector("#director-card");
 
 let currentMap = null;
 
+function getPersonnelData() {
+  try {
+    const stored = localStorage.getItem("qipanPersonnelData");
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch {}
+  return window.DEFAULT_PERSONNEL_DATA;
+}
+
 function showHome() {
   currentMap = null;
   homeView.hidden = false;
   mapView.hidden = true;
+  structureView.hidden = true;
   closePanel();
 }
 
@@ -145,11 +160,20 @@ function showMap(mapId) {
   currentMap = maps[mapId];
   homeView.hidden = true;
   mapView.hidden = false;
+  structureView.hidden = true;
   screenTitle.textContent = currentMap.title;
   mapSubtitle.textContent = currentMap.subtitle;
   activeMap.src = currentMap.image;
   activeMap.alt = `${currentMap.title}示意图`;
   renderRegions();
+  closePanel();
+}
+
+function showStructure() {
+  homeView.hidden = true;
+  mapView.hidden = true;
+  structureView.hidden = false;
+  renderPyramid();
   closePanel();
 }
 
@@ -167,11 +191,11 @@ function renderRegions() {
       shape.setAttribute("role", "button");
       shape.setAttribute("aria-label", region.name);
       shape.dataset.regionId = region.id;
-      shape.addEventListener("click", () => openRegion(region.id));
+      shape.addEventListener("click", () => openMapRegion(region.id));
       shape.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          openRegion(region.id);
+          openMapRegion(region.id);
         }
       });
       hotspotShapes.appendChild(shape);
@@ -191,12 +215,47 @@ function renderRegions() {
     button.type = "button";
     button.dataset.regionId = region.id;
     button.innerHTML = `${region.name}<span>${String(index + 1).padStart(2, "0")} / 点击查看主任信息</span>`;
-    button.addEventListener("click", () => openRegion(region.id));
+    button.addEventListener("click", () => openMapRegion(region.id));
     regionButtons.appendChild(button);
   });
 }
 
-function openRegion(regionId) {
+function renderPyramid() {
+  const data = getPersonnelData();
+  pyramid.innerHTML = "";
+
+  data.organization.forEach((level, levelIndex) => {
+    const levelEl = document.createElement("section");
+    levelEl.className = `pyramid-level pyramid-level--${level.tone}`;
+    levelEl.style.setProperty("--level-index", levelIndex);
+
+    const header = document.createElement("div");
+    header.className = "pyramid-level__header";
+    header.innerHTML = `<span>${level.subtitle}</span><strong>${level.title}</strong>`;
+    levelEl.appendChild(header);
+
+    const positions = document.createElement("div");
+    positions.className = "pyramid-positions";
+
+    level.positions.forEach((position) => {
+      const button = document.createElement("button");
+      button.className = "position-node";
+      button.type = "button";
+      button.dataset.positionId = position.id;
+      button.innerHTML = `
+        <span>${position.title}</span>
+        <strong>${position.name || "待录入"}</strong>
+      `;
+      button.addEventListener("click", () => openPosition(level, position));
+      positions.appendChild(button);
+    });
+
+    levelEl.appendChild(positions);
+    pyramid.appendChild(levelEl);
+  });
+}
+
+function openMapRegion(regionId) {
   const region = currentMap.regions.find((item) => item.id === regionId);
   const director = region.director;
 
@@ -209,24 +268,47 @@ function openRegion(regionId) {
 
   panelMapName.textContent = currentMap.title;
   panelTitle.textContent = region.name;
-  directorCard.innerHTML = renderDirector(director);
+  directorCard.innerHTML = renderPersonCard(director, { areaLabel: "负责区域", area: director.area });
   directorPanel.hidden = false;
   scrim.hidden = false;
 }
 
-function renderDirector(person) {
+function openPosition(level, position) {
+  document.querySelectorAll(".position-node").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.positionId === position.id);
+  });
+
+  panelMapName.textContent = level.title;
+  panelTitle.textContent = position.title;
+  directorCard.innerHTML = renderPersonCard(position, {
+    areaLabel: "岗位职责",
+    area: position.duty,
+    members: position.members
+  });
+  directorPanel.hidden = false;
+  scrim.hidden = false;
+}
+
+function renderPersonCard(person, options = {}) {
   const photo = person.photo
-    ? `<img src="${person.photo}" alt="${person.name}照片" />`
+    ? `<img src="${person.photo}" alt="${person.name || person.title}照片" />`
     : `<span>照片</span>`;
+  const phone = person.phone || "待录入";
+  const name = person.name || "待录入";
+  const duty = options.area || person.duty || person.area || "待录入";
+  const members = options.members?.length
+    ? `<div><dt>组员</dt><dd>${options.members.join("、")}</dd></div>`
+    : "";
 
   return `
     <div class="director-photo">${photo}</div>
     <div class="director-info">
-      <h3>${person.name}</h3>
+      <h3>${name}</h3>
       <dl class="info-list">
-        <div><dt>职务</dt><dd>${person.role}</dd></div>
-        <div><dt>电话</dt><dd>${person.phone}</dd></div>
-        <div><dt>负责区域</dt><dd>${person.area}</dd></div>
+        <div><dt>职务</dt><dd>${person.role || person.title || "待录入"}</dd></div>
+        <div><dt>电话</dt><dd>${phone}</dd></div>
+        <div><dt>${options.areaLabel || "负责区域"}</dt><dd>${duty}</dd></div>
+        ${members}
       </dl>
     </div>
   `;
@@ -237,6 +319,7 @@ function closePanel() {
   scrim.hidden = true;
   document.querySelectorAll(".hotspot").forEach((shape) => shape.classList.remove("is-active"));
   document.querySelectorAll(".region-button").forEach((button) => button.classList.remove("is-active"));
+  document.querySelectorAll(".position-node").forEach((button) => button.classList.remove("is-active"));
 }
 
 homeView.addEventListener("click", (event) => {
@@ -246,7 +329,9 @@ homeView.addEventListener("click", (event) => {
   }
 });
 
+structureEntry.addEventListener("click", showStructure);
 backButton.addEventListener("click", showHome);
+structureBackButton.addEventListener("click", showHome);
 closeButton.addEventListener("click", closePanel);
 scrim.addEventListener("click", closePanel);
 
@@ -266,8 +351,9 @@ document.addEventListener("keydown", (event) => {
       closePanel();
       return;
     }
-    if (currentMap) {
-      showHome();
+    if (!homeView.hidden) {
+      return;
     }
+    showHome();
   }
 });
