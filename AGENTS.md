@@ -15,6 +15,7 @@
 - `personnel-data.js`：岗位分工金字塔的兜底人员结构数据。
 - `admin.html` / `admin.js`：静态维护页，可本机维护人员信息并导出数据文件。
 - `.pages.yml`：Pages CMS 配置，推荐作为正式轻量后台使用。
+- `sveltia/index.html` / `sveltia/config.yml`：Sveltia CMS 试用后台。
 - `assets/town-map.jpg`：镇区辖区底图。
 - `assets/rural-map.jpg`：农牧区辖区底图。
 - `assets/backgrounds/`：首页和大屏背景氛围图。
@@ -85,6 +86,14 @@ https://app.pagescms.org
 ```
 
 Pages CMS 会读取 `.pages.yml`，可直接编辑 `content/*.json` 并上传图片到 `assets/photos/`。
+
+Sveltia CMS 试用地址：
+
+```text
+https://txt990726-yue.github.io/qipan-police-map/sveltia/
+```
+
+Sveltia CMS 会读取 `sveltia/config.yml`，同样编辑 `content/*.json` 和 `assets/photos/`。
 
 后续改文字、社区负责人、组织架构人员和照片时，优先改 `content/*.json`，不要直接改 HTML 或 JS 里的兜底内容。
 

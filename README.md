@@ -57,6 +57,28 @@ https://app.pagescms.org
 
 本地的 `admin.html` 仍保留为快速预览工具：它会优先读取 `content/personnel.json`，保存到本机浏览器后可在当前电脑预览；导出文件名为 `personnel.json`，需要替换 `content/personnel.json` 后再同步线上。
 
+## Sveltia CMS 试用后台
+
+项目已新增 Sveltia CMS 试用入口：
+
+```text
+sveltia/index.html
+```
+
+线上访问地址：
+
+```text
+https://txt990726-yue.github.io/qipan-police-map/sveltia/
+```
+
+配置文件为：
+
+```text
+sveltia/config.yml
+```
+
+Sveltia CMS 同样编辑 `content/*.json` 和 `assets/photos/`，可以用 GitHub 登录，也可以使用 GitHub Personal Access Token 登录。它目前作为 Pages CMS 的替代试用方案保留，不影响大屏前台。
+
 ## 打开方式
 
 推荐用 Edge 或 Chrome 打开。
