@@ -9,6 +9,7 @@
 NocoBase 官方推荐的快速试用方式是 Docker。安装 Docker Desktop 后，在本目录执行：
 
 ```powershell
+Copy-Item docker-compose.sample.txt docker-compose.yml
 docker compose up -d
 ```
 

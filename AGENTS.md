@@ -100,6 +100,7 @@ nocobase-trial/
 当前电脑没有 Docker，不能直接运行 NocoBase。安装 Docker Desktop 后，可以在 `nocobase-trial/` 中执行：
 
 ```powershell
+Copy-Item docker-compose.sample.txt docker-compose.yml
 docker compose up -d
 ```
 
