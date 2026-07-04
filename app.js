@@ -1,4 +1,4 @@
-const maps = {
+let maps = {
   town: {
     title: "镇区辖区",
     subtitle: "请选择社区",
@@ -141,6 +141,147 @@ const directorCard = document.querySelector("#director-card");
 
 let currentMap = null;
 let currentPage = "intro";
+let remotePersonnelData = null;
+
+function normalizePath(value) {
+  if (!value || typeof value !== "string") {
+    return value;
+  }
+  return value.replace(/^\/+/, "");
+}
+
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element && value) {
+    element.textContent = value;
+  }
+}
+
+function renderStats(containerSelector, stats = []) {
+  const container = document.querySelector(containerSelector);
+  if (!container || !stats.length) {
+    return;
+  }
+  container.innerHTML = "";
+  stats.forEach((item) => {
+    const stat = document.createElement("span");
+    const value = document.createElement("strong");
+    value.textContent = item.value;
+    stat.append(value, item.label);
+    container.appendChild(stat);
+  });
+}
+
+async function loadJson(path) {
+  try {
+    const response = await fetch(`${path}?v=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+function applySiteContent(site) {
+  if (!site) {
+    return;
+  }
+
+  setText("#intro-agency", site.intro?.agency);
+  setText("#intro-headline", site.intro?.headline);
+  setText("#intro-eyebrow", site.intro?.eyebrow);
+  setText("#intro-title", site.intro?.title);
+  setText("#intro-next-button", site.intro?.nextButton);
+
+  const paragraphs = document.querySelector("#intro-paragraphs");
+  if (paragraphs && Array.isArray(site.intro?.paragraphs) && site.intro.paragraphs.length) {
+    paragraphs.innerHTML = "";
+    site.intro.paragraphs.forEach((text) => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = text;
+      paragraphs.appendChild(paragraph);
+    });
+  }
+  renderStats("#intro-stats", site.intro?.stats);
+
+  setText("#area-kicker", site.area?.kicker);
+  setText("#area-title", site.area?.title);
+  setText("#area-description", site.area?.description);
+
+  setText("#structure-kicker", site.structure?.kicker);
+  setText("#structure-title", site.structure?.title);
+  setText("#structure-eyebrow", site.structure?.eyebrow);
+  setText("#structure-heading", site.structure?.heading);
+  setText("#structure-description", site.structure?.description);
+  renderStats("#structure-stats", site.structure?.stats);
+}
+
+function applyRegionContent(regionContent) {
+  if (!regionContent) {
+    return;
+  }
+
+  Object.entries(regionContent).forEach(([mapId, editableMap]) => {
+    const map = maps[mapId];
+    if (!map) {
+      return;
+    }
+
+    map.title = editableMap.title || map.title;
+    map.subtitle = editableMap.subtitle || map.subtitle;
+    map.image = normalizePath(editableMap.image) || map.image;
+
+    const editableRegions = Array.isArray(editableMap.regions) ? editableMap.regions : [];
+    editableRegions.forEach((editableRegion) => {
+      const region = map.regions.find((item) => item.id === editableRegion.id);
+      if (!region) {
+        return;
+      }
+      region.name = editableRegion.name || region.name;
+      region.director = {
+        ...region.director,
+        ...editableRegion.director,
+        photo: normalizePath(editableRegion.director?.photo || region.director.photo)
+      };
+    });
+
+    const card = document.querySelector(`[data-map="${mapId}"]`);
+    if (card) {
+      const title = card.querySelector(".card-title");
+      const meta = card.querySelector(".card-meta");
+      const image = card.querySelector("img");
+      if (title) {
+        title.textContent = map.title;
+      }
+      if (meta && editableMap.cardMeta) {
+        meta.textContent = editableMap.cardMeta;
+      }
+      if (image) {
+        image.src = map.image;
+        image.alt = `${map.title}图预览`;
+      }
+    }
+  });
+}
+
+async function loadEditableContent() {
+  const [site, regionContent, personnel] = await Promise.all([
+    loadJson("content/site.json"),
+    loadJson("content/regions.json"),
+    loadJson("content/personnel.json")
+  ]);
+
+  applySiteContent(site);
+  applyRegionContent(regionContent);
+  if (personnel?.organization) {
+    remotePersonnelData = personnel;
+    if (!structureView.hidden) {
+      renderPyramid();
+    }
+  }
+}
 
 function getPersonnelData() {
   try {
@@ -149,7 +290,7 @@ function getPersonnelData() {
       return JSON.parse(stored);
     }
   } catch {}
-  return window.DEFAULT_PERSONNEL_DATA;
+  return remotePersonnelData || window.DEFAULT_PERSONNEL_DATA;
 }
 
 function setActiveTab(page) {
@@ -412,3 +553,5 @@ document.addEventListener("keydown", (event) => {
     showHome();
   }
 });
+
+loadEditableContent();

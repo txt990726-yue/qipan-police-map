@@ -9,8 +9,12 @@
 - `index.html`：页面结构。
 - `styles.css`：16:9 大屏视觉样式。
 - `app.js`：辖区、社区、主任信息、组织架构、点击交互逻辑。
-- `personnel-data.js`：岗位分工金字塔的人员结构数据。
+- `content/site.json`：简介、页面标题、关键数据等可编辑文案。
+- `content/regions.json`：辖区和社区负责人可编辑数据。
+- `content/personnel.json`：岗位分工金字塔的可编辑人员结构数据。
+- `personnel-data.js`：岗位分工金字塔的兜底人员结构数据。
 - `admin.html` / `admin.js`：静态维护页，可本机维护人员信息并导出数据文件。
+- `.pages.yml`：Pages CMS 配置，推荐作为正式轻量后台使用。
 - `assets/town-map.jpg`：镇区辖区底图。
 - `assets/rural-map.jpg`：农牧区辖区底图。
 - `assets/backgrounds/`：首页和大屏背景氛围图。
@@ -37,7 +41,7 @@
 
 ## 修改社区主任信息
 
-社区主任信息在 `app.js` 顶部的 `maps` 对象里。
+社区主任正式维护数据在 `content/regions.json` 中。`app.js` 顶部的 `maps` 对象只作为兜底数据和地图热区坐标，不要优先修改。
 
 每个社区使用 `director` 字段：
 
@@ -59,7 +63,7 @@ photo: "assets/photos/zhangsan.jpg"
 
 ## 修改组织架构信息
 
-组织架构数据在 `personnel-data.js` 的 `window.DEFAULT_PERSONNEL_DATA` 中。
+组织架构正式维护数据在 `content/personnel.json` 中。`personnel-data.js` 只作为兜底数据。
 
 也可以打开 `admin.html` 在当前浏览器中维护。维护页支持：
 
@@ -70,7 +74,19 @@ photo: "assets/photos/zhangsan.jpg"
 - 组员
 - 照片
 
-注意：`admin.html` 是静态维护页，不是真正带账号和数据库的后台。保存只会写入当前浏览器的 `localStorage`，适合本机预览。若要同步到线上，需要导出 `personnel-data.js` 并上传到 GitHub。
+注意：`admin.html` 是静态维护页，不是真正带账号和数据库的后台。保存只会写入当前浏览器的 `localStorage`，适合本机预览。若要同步到线上，需要导出 `personnel.json`，替换 `content/personnel.json` 并上传到 GitHub。
+
+## Pages CMS 维护规则
+
+推荐客户正式维护时使用 Pages CMS：
+
+```text
+https://app.pagescms.org
+```
+
+Pages CMS 会读取 `.pages.yml`，可直接编辑 `content/*.json` 并上传图片到 `assets/photos/`。
+
+后续改文字、社区负责人、组织架构人员和照片时，优先改 `content/*.json`，不要直接改 HTML 或 JS 里的兜底内容。
 
 ## 部署信息
 

@@ -937,7 +937,8 @@ a {
 }
 
 .admin-header a,
-.admin-toolbar button {
+.admin-toolbar button,
+.admin-toolbar a {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   background: #fff;
@@ -963,6 +964,11 @@ a {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
+}
+
+.admin-toolbar a {
+  display: inline-flex;
+  align-items: center;
 }
 
 .admin-form {
@@ -1245,7 +1251,8 @@ a {
 }
 
 .admin-header a,
-.admin-toolbar button {
+.admin-toolbar button,
+.admin-toolbar a {
   border-color: #d7e0ea;
   background: #ffffff;
   box-shadow: 0 8px 22px rgba(26, 43, 61, 0.08);

@@ -1,0 +1,84 @@
+{
+  "town": {
+    "title": "镇区辖区",
+    "subtitle": "请选择社区",
+    "image": "assets/town-map.jpg",
+    "cardMeta": "5 个社区",
+    "regions": [
+      {
+        "id": "qipan",
+        "name": "棋盘社区",
+        "director": {
+          "role": "社区主任",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "棋盘社区辖区",
+          "photo": ""
+        }
+      },
+      {
+        "id": "wuzhu",
+        "name": "乌珠尔社区",
+        "director": {
+          "role": "社区主任",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "乌珠尔社区辖区",
+          "photo": ""
+        }
+      },
+      {
+        "id": "jingan",
+        "name": "靖安社区",
+        "director": {
+          "role": "社区主任",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "靖安社区辖区",
+          "photo": ""
+        }
+      },
+      {
+        "id": "aili",
+        "name": "艾力社区",
+        "director": {
+          "role": "社区主任",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "艾力社区辖区",
+          "photo": ""
+        }
+      },
+      {
+        "id": "qixiang",
+        "name": "棋祥社区",
+        "director": {
+          "role": "社区主任",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "棋祥社区辖区",
+          "photo": ""
+        }
+      }
+    ]
+  },
+  "rural": {
+    "title": "农牧区辖区",
+    "subtitle": "请选择区域",
+    "image": "assets/rural-map.jpg",
+    "cardMeta": "整体辖区",
+    "regions": [
+      {
+        "id": "rural-all",
+        "name": "农牧区整体辖区",
+        "director": {
+          "role": "负责人",
+          "name": "待录入",
+          "phone": "待录入",
+          "area": "农牧区整体辖区",
+          "photo": ""
+        }
+      }
+    ]
+  }
+}

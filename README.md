@@ -31,6 +31,32 @@ assets/backgrounds/
 
 后台维护页已改为左侧岗位分组、右侧编辑卡片的管理台布局，适合客户后续逐项录入。
 
+## Pages CMS 轻量后台
+
+项目已新增 Pages CMS 配置文件：
+
+```text
+.pages.yml
+```
+
+可编辑数据拆分到：
+
+```text
+content/site.json
+content/regions.json
+content/personnel.json
+```
+
+推荐正式维护使用 Pages CMS：
+
+```text
+https://app.pagescms.org
+```
+
+登录 GitHub 后选择本仓库，即可编辑简介、辖区负责人、组织架构人员，并上传人员照片到 `assets/photos/`。
+
+本地的 `admin.html` 仍保留为快速预览工具：它会优先读取 `content/personnel.json`，保存到本机浏览器后可在当前电脑预览；导出文件名为 `personnel.json`，需要替换 `content/personnel.json` 后再同步线上。
+
 ## 打开方式
 
 推荐用 Edge 或 Chrome 打开。
@@ -78,15 +104,15 @@ photo: ""
 personnel-data.js
 ```
 
-后台维护页位于：
+本地快速维护页位于：
 
 ```text
 admin.html
 ```
 
-后台可以录入岗位、姓名、电话、职责、组员和照片。照片可以在后台选择本地图片，保存到当前浏览器后，大屏页面刷新即可预览。
+本地快速维护页可以录入岗位、姓名、电话、职责、组员和照片。照片可以在后台选择本地图片，保存到当前浏览器后，大屏页面刷新即可预览。
 
-注意：这是 GitHub Pages 静态网页，不是真正带服务器的后台。后台保存的数据只保存在当前电脑浏览器里。如果要让线上所有人都看到修改，需要在后台点击“导出 personnel-data.js”，再把导出的文件同步到 GitHub。
+注意：这是 GitHub Pages 静态网页，不是真正带服务器的后台。本地维护页保存的数据只保存在当前电脑浏览器里。如果要让线上所有人都看到修改，推荐使用 Pages CMS；或导出 `personnel.json` 后替换 `content/personnel.json` 并同步到 GitHub。
 
 如果后续改成本地大厅电脑使用，也可以把真实照片放到：
 

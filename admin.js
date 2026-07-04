@@ -20,6 +20,23 @@ function loadData() {
   return cloneData(window.DEFAULT_PERSONNEL_DATA);
 }
 
+async function loadContentPersonnel() {
+  try {
+    if (localStorage.getItem("qipanPersonnelData")) {
+      return;
+    }
+    const response = await fetch(`content/personnel.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) {
+      return;
+    }
+    const data = await response.json();
+    if (data?.organization) {
+      personnelData = data;
+      renderForm();
+    }
+  } catch {}
+}
+
 function renderForm() {
   form.innerHTML = "";
   sectionNav.innerHTML = "";
@@ -119,14 +136,15 @@ resetLocalButton.addEventListener("click", () => {
 });
 
 exportButton.addEventListener("click", () => {
-  const content = `window.DEFAULT_PERSONNEL_DATA = ${JSON.stringify(personnelData, null, 2)};\n`;
-  const blob = new Blob([content], { type: "text/javascript;charset=utf-8" });
+  const content = `${JSON.stringify(personnelData, null, 2)}\n`;
+  const blob = new Blob([content], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "personnel-data.js";
+  link.download = "personnel.json";
   link.click();
   URL.revokeObjectURL(url);
 });
 
 renderForm();
+loadContentPersonnel();

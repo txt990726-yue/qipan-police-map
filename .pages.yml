@@ -1,0 +1,148 @@
+media:
+  input: assets/photos
+  output: assets/photos
+
+content:
+  - name: site
+    label: 大屏页面文案
+    type: file
+    path: content/site.json
+    fields:
+      - name: intro
+        label: 第一页简介
+        type: object
+        fields:
+          - { name: agency, label: 单位名称, type: string }
+          - { name: headline, label: 首页大标题, type: string }
+          - { name: eyebrow, label: 栏目小标题, type: string }
+          - { name: title, label: 简介标题, type: string }
+          - name: paragraphs
+            label: 简介正文段落
+            type: text
+            list: true
+            options:
+              rows: 4
+          - name: stats
+            label: 关键数据
+            type: object
+            list: true
+            fields:
+              - { name: value, label: 数值, type: string }
+              - { name: label, label: 名称, type: string }
+          - { name: nextButton, label: 按钮文字, type: string }
+      - name: area
+        label: 第二页辖区图
+        type: object
+        fields:
+          - { name: kicker, label: 页眉小标题, type: string }
+          - { name: title, label: 大标题, type: string }
+          - { name: description, label: 说明文字, type: text }
+      - name: structure
+        label: 第三页分工金字塔
+        type: object
+        fields:
+          - { name: kicker, label: 页眉小标题, type: string }
+          - { name: title, label: 大标题, type: string }
+          - { name: eyebrow, label: 侧栏小标题, type: string }
+          - { name: heading, label: 侧栏标题, type: string }
+          - { name: description, label: 侧栏说明, type: text }
+          - name: stats
+            label: 侧栏数据
+            type: object
+            list: true
+            fields:
+              - { name: value, label: 数值, type: string }
+              - { name: label, label: 名称, type: string }
+
+  - name: regions
+    label: 辖区与社区负责人
+    type: file
+    path: content/regions.json
+    fields:
+      - name: town
+        label: 镇区辖区
+        type: object
+        fields:
+          - { name: title, label: 页面标题, type: string }
+          - { name: subtitle, label: 提示文字, type: string }
+          - { name: image, label: 地图路径, type: string }
+          - { name: cardMeta, label: 首页卡片说明, type: string }
+          - name: regions
+            label: 社区列表
+            type: object
+            list: true
+            fields:
+              - { name: id, label: 内部编号, type: string, hidden: true }
+              - { name: name, label: 社区名称, type: string }
+              - name: director
+                label: 负责人信息
+                type: object
+                fields:
+                  - { name: role, label: 职务, type: string }
+                  - { name: name, label: 姓名, type: string }
+                  - { name: phone, label: 电话, type: string }
+                  - { name: area, label: 负责区域, type: text }
+                  - { name: photo, label: 照片, type: image }
+      - name: rural
+        label: 农牧区辖区
+        type: object
+        fields:
+          - { name: title, label: 页面标题, type: string }
+          - { name: subtitle, label: 提示文字, type: string }
+          - { name: image, label: 地图路径, type: string }
+          - { name: cardMeta, label: 首页卡片说明, type: string }
+          - name: regions
+            label: 区域列表
+            type: object
+            list: true
+            fields:
+              - { name: id, label: 内部编号, type: string, hidden: true }
+              - { name: name, label: 区域名称, type: string }
+              - name: director
+                label: 负责人信息
+                type: object
+                fields:
+                  - { name: role, label: 职务, type: string }
+                  - { name: name, label: 姓名, type: string }
+                  - { name: phone, label: 电话, type: string }
+                  - { name: area, label: 负责区域, type: text }
+                  - { name: photo, label: 照片, type: image }
+
+  - name: personnel
+    label: 组织架构人员
+    type: file
+    path: content/personnel.json
+    fields:
+      - { name: version, label: 数据版本, type: number }
+      - { name: updatedAt, label: 更新时间, type: date }
+      - name: organization
+        label: 岗位分层
+        type: object
+        list: true
+        fields:
+          - { name: id, label: 内部编号, type: string, hidden: true }
+          - { name: title, label: 层级名称, type: string }
+          - { name: subtitle, label: 层级说明, type: string }
+          - name: tone
+            label: 层级颜色
+            type: select
+            options:
+              values: [gold, cyan, blue, orange, green]
+          - name: positions
+            label: 岗位人员
+            type: object
+            list: true
+            fields:
+              - { name: id, label: 内部编号, type: string, hidden: true }
+              - { name: title, label: 岗位, type: string }
+              - { name: name, label: 姓名, type: string }
+              - { name: duty, label: 职责, type: text }
+              - { name: phone, label: 电话, type: string }
+              - { name: photo, label: 照片, type: image }
+              - name: members
+                label: 组员
+                type: string
+                list: true
+
+settings:
+  hide: true
