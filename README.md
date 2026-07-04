@@ -59,13 +59,13 @@ https://app.pagescms.org
 
 ## NocoBase 试用后台
 
-项目已新增 NocoBase 试用目录：
+本机工作区已新增 NocoBase 试用目录：
 
 ```text
 nocobase-trial/
 ```
 
-当前电脑没有安装 Docker，所以暂时不能直接运行 NocoBase。安装 Docker Desktop 后，可以进入该目录执行：
+这个目录只用于本地试跑，不发布到 GitHub Pages。当前电脑没有安装 Docker，所以暂时不能直接运行 NocoBase。安装 Docker Desktop 后，可以进入该目录执行：
 
 ```powershell
 Copy-Item docker-compose.sample.txt docker-compose.yml

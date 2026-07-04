@@ -15,7 +15,7 @@
 - `personnel-data.js`：岗位分工金字塔的兜底人员结构数据。
 - `admin.html` / `admin.js`：静态维护页，可本机维护人员信息并导出数据文件。
 - `.pages.yml`：Pages CMS 配置，推荐作为正式轻量后台使用。
-- `nocobase-trial/`：NocoBase 试用配置，不影响当前静态大屏。
+- `nocobase-trial/`：本地 NocoBase 试用配置，不发布到 GitHub Pages，不影响当前静态大屏。
 - `assets/town-map.jpg`：镇区辖区底图。
 - `assets/rural-map.jpg`：农牧区辖区底图。
 - `assets/backgrounds/`：首页和大屏背景氛围图。
@@ -91,13 +91,13 @@ Pages CMS 会读取 `.pages.yml`，可直接编辑 `content/*.json` 并上传图
 
 ## NocoBase 试用规则
 
-NocoBase 试用配置位于：
+NocoBase 本地试用配置位于：
 
 ```text
 nocobase-trial/
 ```
 
-当前电脑没有 Docker，不能直接运行 NocoBase。安装 Docker Desktop 后，可以在 `nocobase-trial/` 中执行：
+该目录只保留在本机工作区，不发布到 GitHub Pages。当前电脑没有 Docker，不能直接运行 NocoBase。安装 Docker Desktop 后，可以在 `nocobase-trial/` 中执行：
 
 ```powershell
 Copy-Item docker-compose.sample.txt docker-compose.yml
