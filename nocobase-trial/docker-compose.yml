@@ -1,0 +1,38 @@
+services:
+  app:
+    image: nocobase/nocobase:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - APP_KEY=replace-with-a-random-string-before-formal-use
+      - DB_DIALECT=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=nocobase
+      - DB_USER=nocobase
+      - DB_PASSWORD=nocobase
+    volumes:
+      - nocobase_storage:/app/nocobase/storage
+    ports:
+      - "13000:80"
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=nocobase
+      - POSTGRES_USER=nocobase
+      - POSTGRES_PASSWORD=nocobase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nocobase -d nocobase"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  nocobase_storage:
+  postgres_data:

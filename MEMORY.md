@@ -42,7 +42,8 @@
 - 新增静态维护页 `admin.html`，可在当前浏览器维护人员信息并导出 `personnel.json`。
 - 优化后台 UI 为左侧岗位分组导航、右侧人员编辑卡片，避免输入框过暗和排版松散。
 - 新增 Pages CMS 轻量后台配置 `.pages.yml`。
-- 新增 Sveltia CMS 试用后台 `sveltia/index.html` 和 `sveltia/config.yml`。
+- 已移除之前试用的另一套 Git-based CMS 后台。
+- 新增 NocoBase 试用目录 `nocobase-trial/`，包含 Docker Compose 和中文说明。
 - 将可编辑内容拆分为 `content/site.json`、`content/regions.json`、`content/personnel.json`。
 - 前台优先读取 `content/*.json`，读取失败时回退到原有静态默认内容，避免白屏。
 - 本地 `admin.html` 改为读取和导出 `content/personnel.json` 对应的数据格式。
@@ -86,4 +87,5 @@ HTTPS_PROXY=http://127.0.0.1:7897
 2. 如果信息不适合公开，考虑把 GitHub Pages 版本改回占位信息，只把真实版本放在本地或单位内网。
 3. 可以继续优化视觉设计，例如更正式的公安蓝风格、更强的地图边界提示、更漂亮的信息弹窗。
 4. 如果客户希望真正在线上传照片并多人共同维护，需要改成带后端或云存储的方案；当前 GitHub Pages 后台只适合本机预览和导出文件。
-5. 正式线上维护优先用 Pages CMS 或 Sveltia CMS 修改 `content/*.json` 和 `assets/photos/`，不要再直接改 `app.js` 里的兜底数据。
+5. 正式线上轻量维护仍可用 Pages CMS 修改 `content/*.json` 和 `assets/photos/`。
+6. NocoBase 需要 Docker 或数据库服务，确认采用前不要把大屏前台改为依赖 NocoBase API。

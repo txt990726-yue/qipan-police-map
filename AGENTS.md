@@ -15,7 +15,7 @@
 - `personnel-data.js`：岗位分工金字塔的兜底人员结构数据。
 - `admin.html` / `admin.js`：静态维护页，可本机维护人员信息并导出数据文件。
 - `.pages.yml`：Pages CMS 配置，推荐作为正式轻量后台使用。
-- `sveltia/index.html` / `sveltia/config.yml`：Sveltia CMS 试用后台。
+- `nocobase-trial/`：NocoBase 试用配置，不影响当前静态大屏。
 - `assets/town-map.jpg`：镇区辖区底图。
 - `assets/rural-map.jpg`：农牧区辖区底图。
 - `assets/backgrounds/`：首页和大屏背景氛围图。
@@ -87,15 +87,23 @@ https://app.pagescms.org
 
 Pages CMS 会读取 `.pages.yml`，可直接编辑 `content/*.json` 并上传图片到 `assets/photos/`。
 
-Sveltia CMS 试用地址：
+后续改文字、社区负责人、组织架构人员和照片时，优先改 `content/*.json`，不要直接改 HTML 或 JS 里的兜底内容。
+
+## NocoBase 试用规则
+
+NocoBase 试用配置位于：
 
 ```text
-https://txt990726-yue.github.io/qipan-police-map/sveltia/
+nocobase-trial/
 ```
 
-Sveltia CMS 会读取 `sveltia/config.yml`，同样编辑 `content/*.json` 和 `assets/photos/`。
+当前电脑没有 Docker，不能直接运行 NocoBase。安装 Docker Desktop 后，可以在 `nocobase-trial/` 中执行：
 
-后续改文字、社区负责人、组织架构人员和照片时，优先改 `content/*.json`，不要直接改 HTML 或 JS 里的兜底内容。
+```powershell
+docker compose up -d
+```
+
+在用户确认采用 NocoBase 前，不要把前台大屏改成强依赖 NocoBase API。
 
 ## 部署信息
 
