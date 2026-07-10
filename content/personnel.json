@@ -13,48 +13,37 @@
           "title": "副所长",
           "name": "孟海军",
           "duty": "分管全盘工作",
-          "phone": "",
-          "photo": ""
+          "photo": "assets/photos/640 (5).gif"
         },
         {
           "id": "leader-bao",
           "title": "副所长",
           "name": "包泽军",
-          "duty": "分管综合指挥室",
-          "phone": "",
-          "photo": ""
+          "duty": "分管综合指挥室"
         },
         {
           "id": "leader-wangwei",
           "title": "副所长",
           "name": "王伟",
-          "duty": "分管案件办理中队",
-          "phone": "",
-          "photo": ""
+          "duty": "分管案件办理中队"
         },
         {
           "id": "leader-guo",
           "title": "副所长",
           "name": "郭鑫",
-          "duty": "分管社区警务中队",
-          "phone": "",
-          "photo": ""
+          "duty": "分管社区警务中队"
         },
         {
           "id": "leader-yang",
           "title": "副所长",
           "name": "杨勇",
-          "duty": "分管信访工作、矛盾纠纷化解、流动警务室",
-          "phone": "",
-          "photo": ""
+          "duty": "分管信访工作、矛盾纠纷化解、流动警务室"
         },
         {
           "id": "leader-xiaoyi",
           "title": "副所长",
           "name": "王晓义",
-          "duty": "分管防电信诈骗等工作",
-          "phone": "",
-          "photo": ""
+          "duty": "分管防电信诈骗等工作"
         }
       ]
     },
@@ -68,25 +57,19 @@
           "id": "command-office",
           "title": "综合指挥室主任",
           "name": "宿斐鸿",
-          "duty": "综合指挥室",
-          "phone": "",
-          "photo": ""
+          "duty": "综合指挥室"
         },
         {
           "id": "case-squad",
           "title": "案件办理中队中队长",
           "name": "徐海东",
-          "duty": "案件办理中队",
-          "phone": "",
-          "photo": ""
+          "duty": "案件办理中队"
         },
         {
           "id": "community-squad",
           "title": "社区警务中队",
           "name": "李洋",
-          "duty": "社区警务中队",
-          "phone": "",
-          "photo": ""
+          "duty": "社区警务中队"
         }
       ]
     },
@@ -100,49 +83,37 @@
           "id": "support-wangli",
           "title": "综合后勤",
           "name": "王丽",
-          "duty": "综合后勤",
-          "phone": "",
-          "photo": ""
+          "duty": "综合后勤"
         },
         {
           "id": "support-liufengxi",
           "title": "党务内勤",
           "name": "刘逢玺",
-          "duty": "党务内勤",
-          "phone": "",
-          "photo": ""
+          "duty": "党务内勤"
         },
         {
           "id": "support-liuyuyang",
           "title": "综合内勤",
           "name": "刘羽洋",
-          "duty": "综合内勤",
-          "phone": "",
-          "photo": ""
+          "duty": "综合内勤"
         },
         {
           "id": "support-bianxin",
           "title": "社区中队内勤",
           "name": "边欣",
-          "duty": "社区中队内勤",
-          "phone": "",
-          "photo": ""
+          "duty": "社区中队内勤"
         },
         {
           "id": "support-lijing",
           "title": "案件中队内勤",
           "name": "李静",
-          "duty": "案件中队内勤",
-          "phone": "",
-          "photo": ""
+          "duty": "案件中队内勤"
         },
         {
           "id": "support-gaoxin",
           "title": "车辆、厨房专管民警",
           "name": "高鑫",
-          "duty": "车辆、厨房专管民警",
-          "phone": "",
-          "photo": ""
+          "duty": "车辆、厨房专管民警"
         }
       ]
     },
@@ -157,45 +128,49 @@
           "title": "案件办理一组",
           "name": "康帅",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["赵旭东", "王凯阳"]
+          "members": [
+            "赵旭东",
+            "王凯阳"
+          ]
         },
         {
           "id": "case-group-2",
           "title": "案件办理二组",
           "name": "苏浩",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["朝格莫日根", "张帅"]
+          "members": [
+            "朝格莫日根",
+            "张帅"
+          ]
         },
         {
           "id": "case-group-3",
           "title": "案件办理三组",
           "name": "呼和",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["王鑫隆", "魏宇廷"]
+          "members": [
+            "王鑫隆",
+            "魏宇廷"
+          ]
         },
         {
           "id": "case-group-4",
           "title": "案件办理四组",
           "name": "刘峰",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["万鹏雪", "王鑫"]
+          "members": [
+            "万鹏雪",
+            "王鑫"
+          ]
         },
         {
           "id": "case-group-5",
           "title": "案件办理五组",
           "name": "俞乐",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["梁占东"]
+          "members": [
+            "梁占东"
+          ]
         }
       ]
     },
@@ -209,50 +184,47 @@
           "id": "community-wuzhu",
           "title": "乌珠尔社区",
           "name": "王银",
-          "duty": "组长",
-          "phone": "",
-          "photo": ""
+          "duty": "组长"
         },
         {
           "id": "community-qipan",
           "title": "棋盘社区",
           "name": "包金柱",
-          "duty": "组长",
-          "phone": "",
-          "photo": ""
+          "duty": "组长"
         },
         {
           "id": "community-qixiang",
           "title": "棋祥社区",
           "name": "李洋",
-          "duty": "组长",
-          "phone": "",
-          "photo": ""
+          "duty": "组长"
         },
         {
           "id": "community-aili",
           "title": "艾力社区",
           "name": "许丽平",
-          "duty": "组长",
-          "phone": "",
-          "photo": ""
+          "duty": "组长"
         },
         {
           "id": "community-jingan",
           "title": "靖安社区",
           "name": "高勇",
-          "duty": "组长",
-          "phone": "",
-          "photo": ""
+          "duty": "组长"
         },
         {
           "id": "anda-office",
           "title": "安达警务室",
           "name": "吴远刚",
           "duty": "组长",
-          "phone": "",
-          "photo": "",
-          "members": ["杨剑", "梁旭", "王帅", "马嘉伟", "王龙", "刘军", "焦二雄", "吉布斯格图"]
+          "members": [
+            "杨剑",
+            "梁旭",
+            "王帅",
+            "马嘉伟",
+            "王龙",
+            "刘军",
+            "焦二雄",
+            "吉布斯格图"
+          ]
         }
       ]
     }
