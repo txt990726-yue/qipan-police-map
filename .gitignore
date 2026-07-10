@@ -1,0 +1,18 @@
+# Local backend trial and secrets
+nocobase-local.js
+nocobase-trial/
+
+# Local deliverables and large source files
+*.pptx
+*.ppt
+*.wps
+*.zip
+
+# Generated or temporary outputs
+outputs/
+*.tmp
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

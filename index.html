@@ -4,16 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>鄂托克旗公安局棋盘井第一派出所辖区互动屏</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" as="image" href="assets/backgrounds/service-01.webp" type="image/webp" fetchpriority="high" />
+    <link rel="stylesheet" href="styles.css?v=20260711-login" />
   </head>
   <body>
     <main class="screen-frame">
       <div class="photo-backdrop" aria-hidden="true">
-        <img class="backdrop-photo" src="assets/backgrounds/service-01.jpg" alt="" />
-        <img class="backdrop-photo" src="assets/backgrounds/service-02.jpg" alt="" />
-        <img class="backdrop-photo" src="assets/backgrounds/service-03.jpg" alt="" />
-        <img class="backdrop-photo" src="assets/backgrounds/service-04.jpg" alt="" />
-        <img class="backdrop-photo" src="assets/backgrounds/service-05.jpg" alt="" />
+        <img class="backdrop-photo" src="assets/backgrounds/service-01.webp" alt="" fetchpriority="high" decoding="async" />
+        <img class="backdrop-photo" data-src="assets/backgrounds/service-02.webp" alt="" decoding="async" />
+        <img class="backdrop-photo" data-src="assets/backgrounds/service-03.webp" alt="" decoding="async" />
+        <img class="backdrop-photo" data-src="assets/backgrounds/service-04.webp" alt="" decoding="async" />
+        <img class="backdrop-photo" data-src="assets/backgrounds/service-05.webp" alt="" decoding="async" />
         <div class="backdrop-mask"></div>
         <div class="backdrop-grid"></div>
       </div>
@@ -74,14 +75,14 @@
             <span class="card-index">01</span>
             <span class="card-title">镇区辖区</span>
             <span class="card-meta">5 个社区</span>
-            <img src="assets/town-map.jpg" alt="镇区辖区图预览" />
+            <img data-src="assets/town-map.jpg" alt="镇区辖区图预览" decoding="async" />
           </button>
 
           <button class="jurisdiction-card jurisdiction-card--rural" type="button" data-map="rural">
             <span class="card-index">02</span>
             <span class="card-title">农牧区辖区</span>
             <span class="card-meta">整体辖区</span>
-            <img src="assets/rural-map.jpg" alt="农牧区辖区图预览" />
+            <img data-src="assets/rural-map.jpg" alt="农牧区辖区图预览" decoding="async" />
           </button>
         </div>
 
@@ -158,7 +159,7 @@
           <span>03</span>
           分工金字塔
         </button>
-        <a class="page-tab page-tab--admin" href="admin.html" target="_blank" rel="noopener">
+        <a class="page-tab page-tab--admin" href="https://app.pagescms.org" target="_blank" rel="noopener">
           后台
         </a>
       </nav>
@@ -173,7 +174,31 @@
 
     <div class="scrim" id="scrim" hidden></div>
 
+    <div class="admin-login-scrim" id="admin-login-scrim" hidden></div>
+    <aside class="admin-login-panel" id="admin-login-panel" role="dialog" aria-modal="true" aria-labelledby="admin-login-title" hidden>
+      <button class="admin-login-close" id="admin-login-close" type="button" aria-label="关闭后台登录">×</button>
+      <p>后台管理入口</p>
+      <h2 id="admin-login-title">管理员登录</h2>
+      <form class="admin-login-form" id="admin-login-form">
+        <label>
+          <span>账号</span>
+          <input id="admin-login-email" name="email" type="email" autocomplete="username" placeholder="请输入管理员账号" required />
+        </label>
+        <label>
+          <span>密码</span>
+          <input id="admin-login-password" name="password" type="password" autocomplete="current-password" placeholder="请输入管理员密码" required />
+        </label>
+        <div class="admin-login-message" id="admin-login-message" role="status"></div>
+        <button class="admin-login-submit" type="submit">登录并进入后台</button>
+      </form>
+    </aside>
+
     <script src="personnel-data.js"></script>
-    <script src="app.js"></script>
+    <script>
+      if (["localhost", "127.0.0.1", ""].includes(window.location.hostname)) {
+        document.write('<script src="nocobase-local.js"><\/script>');
+      }
+    </script>
+    <script src="app.js?v=20260711-login"></script>
   </body>
 </html>

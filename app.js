@@ -127,6 +127,7 @@ const structureBackButton = document.querySelector(".structure-back-button");
 const pageTargets = document.querySelectorAll("[data-page-target]");
 const pageTabs = document.querySelectorAll(".page-tab[data-page-target]");
 const pageNav = document.querySelector(".page-tabs");
+const adminLink = document.querySelector(".page-tab--admin");
 const fullscreenButtons = document.querySelectorAll(".fullscreen-button");
 const hotspotShapes = document.querySelector("#hotspot-shapes");
 const mapLabels = document.querySelector("#map-labels");
@@ -138,16 +139,56 @@ const closeButton = document.querySelector(".close-button");
 const panelMapName = document.querySelector("#panel-map-name");
 const panelTitle = document.querySelector("#panel-title");
 const directorCard = document.querySelector("#director-card");
+const cardPreviewImages = document.querySelectorAll(".jurisdiction-card img");
+const deferredBackdropImages = document.querySelectorAll(".backdrop-photo[data-src]");
+const adminLoginPanel = document.querySelector("#admin-login-panel");
+const adminLoginScrim = document.querySelector("#admin-login-scrim");
+const adminLoginForm = document.querySelector("#admin-login-form");
+const adminLoginClose = document.querySelector("#admin-login-close");
+const adminLoginEmail = document.querySelector("#admin-login-email");
+const adminLoginPassword = document.querySelector("#admin-login-password");
+const adminLoginMessage = document.querySelector("#admin-login-message");
 
 let currentMap = null;
 let currentPage = "intro";
 let remotePersonnelData = null;
+let deferredAssetsScheduled = false;
+
+const nocobaseConfig = {
+  enabled: false,
+  collection: "qipanContents",
+  ...(window.QIPAN_NOCOBASE_CONFIG || {})
+};
+
+const CONTENT_VERSION = "20260711";
+const NOCOBASE_TIMEOUT_MS = 1800;
+const NOCOBASE_CONTENT_CACHE_KEY = "qipanNocobaseContentCache";
+const ADMIN_EMAIL_CACHE_KEY = "qipanAdminEmail";
+const ADMIN_TOKEN_KEYS = ["qipanNocobaseToken", "qipan-content-admin-token", "qipan-personnel-admin-token"];
+
+function shouldUseNocoBase() {
+  return Boolean(
+    nocobaseConfig.enabled &&
+      nocobaseConfig.apiBase &&
+      nocobaseConfig.email &&
+      nocobaseConfig.password &&
+      ["localhost", "127.0.0.1", ""].includes(window.location.hostname)
+  );
+}
 
 function normalizePath(value) {
   if (!value || typeof value !== "string") {
     return value;
   }
-  return value.replace(/^\/+/, "");
+  const path = value.trim();
+  if (/^(https?:|data:|blob:)/i.test(path)) {
+    return path;
+  }
+  if (/^\/?storage\//.test(path) && nocobaseConfig.apiBase) {
+    const base = nocobaseConfig.apiBase.replace(/\/api\/?$/, "/");
+    return new URL(path.replace(/^\/?/, "/"), base).href;
+  }
+  return path.replace(/^\/+/, "");
 }
 
 function setText(selector, value) {
@@ -155,6 +196,148 @@ function setText(selector, value) {
   if (element && value) {
     element.textContent = value;
   }
+}
+
+function configureAdminLink() {
+  if (!adminLink) {
+    return;
+  }
+
+  if (shouldUseNocoBase()) {
+    const base = nocobaseConfig.apiBase.replace(/\/api\/?$/, "/");
+    adminLink.href = new URL("dist/codex/content-admin.html?v=20260711-login", base).href;
+    adminLink.title = "打开本机 NocoBase 内容后台";
+    return;
+  }
+
+  adminLink.href = "https://app.pagescms.org";
+  adminLink.title = "打开 Pages CMS 线上内容后台";
+}
+
+function setAdminLoginMessage(message, isError = false) {
+  if (!adminLoginMessage) {
+    return;
+  }
+  adminLoginMessage.textContent = message || "";
+  adminLoginMessage.classList.toggle("is-error", Boolean(isError));
+}
+
+function openAdminLogin(event) {
+  if (!shouldUseNocoBase()) {
+    return;
+  }
+  event.preventDefault();
+  closePanel();
+  setAdminLoginMessage("");
+  adminLoginPanel.hidden = false;
+  adminLoginScrim.hidden = false;
+  adminLoginEmail.value = sessionStorage.getItem(ADMIN_EMAIL_CACHE_KEY) || "";
+  adminLoginPassword.value = "";
+  window.setTimeout(() => (adminLoginEmail.value ? adminLoginPassword : adminLoginEmail).focus(), 40);
+}
+
+function closeAdminLogin() {
+  if (!adminLoginPanel || adminLoginPanel.hidden) {
+    return;
+  }
+  adminLoginPanel.hidden = true;
+  adminLoginScrim.hidden = true;
+  setAdminLoginMessage("");
+  adminLoginPassword.value = "";
+}
+
+async function signInForAdmin(email, password) {
+  const response = await fetch(`${nocobaseConfig.apiBase}auth:signIn`, {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+  const result = await response.json().catch(() => ({}));
+  const token = result?.data?.token;
+  if (!response.ok || !token) {
+    throw new Error(result?.errors?.[0]?.message || result?.message || "账号或密码不正确");
+  }
+  ADMIN_TOKEN_KEYS.forEach((key) => sessionStorage.setItem(key, token));
+  sessionStorage.setItem(ADMIN_EMAIL_CACHE_KEY, email);
+  return token;
+}
+
+async function handleAdminLoginSubmit(event) {
+  event.preventDefault();
+  if (!shouldUseNocoBase()) {
+    return;
+  }
+  const submitButton = adminLoginForm.querySelector("button[type='submit']");
+  const email = adminLoginEmail.value.trim();
+  const password = adminLoginPassword.value;
+  submitButton.disabled = true;
+  setAdminLoginMessage("正在验证管理员身份...");
+  try {
+    await signInForAdmin(email, password);
+    setAdminLoginMessage("登录成功，正在进入后台...");
+    window.location.href = adminLink.href;
+  } catch (error) {
+    setAdminLoginMessage(error.message || "登录失败，请检查账号密码", true);
+    adminLoginPassword.focus();
+  } finally {
+    submitButton.disabled = false;
+  }
+}
+
+function runWhenIdle(callback, timeout = 1200) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, { timeout });
+    return;
+  }
+  window.setTimeout(callback, Math.min(timeout, 800));
+}
+
+function hydrateImage(image, nextSrc = image?.dataset.src) {
+  const src = normalizePath(nextSrc);
+  if (!image || !src || image.dataset.loadedSrc === src) {
+    return;
+  }
+
+  image.classList.remove("is-loaded");
+  image.addEventListener(
+    "load",
+    () => {
+      image.dataset.loadedSrc = src;
+      image.classList.add("is-loaded");
+    },
+    { once: true }
+  );
+  image.dataset.src = src;
+  image.src = src;
+}
+
+function setDeferredImage(image, src) {
+  const nextSrc = normalizePath(src);
+  if (!image || !nextSrc) {
+    return;
+  }
+  image.dataset.src = nextSrc;
+  if (image.dataset.loadedSrc && image.dataset.loadedSrc !== nextSrc) {
+    hydrateImage(image, nextSrc);
+  }
+}
+
+function hydrateCardPreviewImages() {
+  cardPreviewImages.forEach((image) => hydrateImage(image));
+}
+
+function scheduleDeferredAssets() {
+  if (deferredAssetsScheduled) {
+    return;
+  }
+  deferredAssetsScheduled = true;
+  runWhenIdle(() => {
+    deferredBackdropImages.forEach((image) => hydrateImage(image));
+    hydrateCardPreviewImages();
+  });
 }
 
 function renderStats(containerSelector, stats = []) {
@@ -174,7 +357,7 @@ function renderStats(containerSelector, stats = []) {
 
 async function loadJson(path) {
   try {
-    const response = await fetch(`${path}?v=${Date.now()}`, { cache: "no-store" });
+    const response = await fetch(`${path}?v=${CONTENT_VERSION}`);
     if (!response.ok) {
       return null;
     }
@@ -182,6 +365,82 @@ async function loadJson(path) {
   } catch {
     return null;
   }
+}
+
+async function requestNocoBase(path, options = {}) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), NOCOBASE_TIMEOUT_MS);
+  try {
+    const response = await fetch(`${nocobaseConfig.apiBase}${path}`, {
+      ...options,
+      cache: "no-store",
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`NocoBase request failed: ${response.status}`);
+    }
+    return response.json();
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+async function getNocoBaseToken() {
+  const cached = sessionStorage.getItem("qipanNocobaseToken");
+  if (cached) {
+    return cached;
+  }
+
+  const result = await requestNocoBase("auth:signIn", {
+    method: "POST",
+    body: JSON.stringify({
+      email: nocobaseConfig.email,
+      password: nocobaseConfig.password
+    })
+  });
+  const token = result?.data?.token;
+  if (!token) {
+    throw new Error("NocoBase token missing");
+  }
+  sessionStorage.setItem("qipanNocobaseToken", token);
+  return token;
+}
+
+async function loadNocoBaseContent() {
+  if (!shouldUseNocoBase()) {
+    return null;
+  }
+
+  try {
+    const token = await getNocoBaseToken();
+    const result = await requestNocoBase(`${nocobaseConfig.collection}:list?pageSize=50&sort=id`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Role": "root"
+      }
+    });
+    const content = {};
+    (result?.data || []).forEach((record) => {
+      if (!record.slug || !record.payload) {
+        return;
+      }
+      try {
+        content[record.slug] = JSON.parse(record.payload);
+      } catch {}
+    });
+    if (content.site || content.regions || content.personnel) {
+      return content;
+    }
+  } catch (error) {
+    sessionStorage.removeItem("qipanNocobaseToken");
+    console.warn("NocoBase content unavailable, falling back to JSON files.", error);
+  }
+
+  return null;
 }
 
 function applySiteContent(site) {
@@ -259,38 +518,97 @@ function applyRegionContent(regionContent) {
         meta.textContent = editableMap.cardMeta;
       }
       if (image) {
-        image.src = map.image;
+        setDeferredImage(image, map.image);
         image.alt = `${map.title}图预览`;
       }
     }
   });
 }
 
-async function loadEditableContent() {
-  const [site, regionContent, personnel] = await Promise.all([
+async function loadStaticContent() {
+  const [site, regions, personnel] = await Promise.all([
     loadJson("content/site.json"),
     loadJson("content/regions.json"),
     loadJson("content/personnel.json")
   ]);
+  return { site, regions, personnel };
+}
 
-  applySiteContent(site);
-  applyRegionContent(regionContent);
-  if (personnel?.organization) {
-    remotePersonnelData = personnel;
+function readCachedNocoBaseContent() {
+  try {
+    const stored = localStorage.getItem(NOCOBASE_CONTENT_CACHE_KEY);
+    if (!stored) {
+      return null;
+    }
+    const parsed = JSON.parse(stored);
+    return parsed?.content || null;
+  } catch {
+    return null;
+  }
+}
+
+function cacheNocoBaseContent(content) {
+  try {
+    localStorage.setItem(
+      NOCOBASE_CONTENT_CACHE_KEY,
+      JSON.stringify({
+        savedAt: new Date().toISOString(),
+        content
+      })
+    );
+  } catch {}
+}
+
+function applyEditableContentBundle(content, source) {
+  if (!content) {
+    return;
+  }
+  document.documentElement.dataset.contentSource = source;
+  applySiteContent(content.site);
+  applyRegionContent(content.regions);
+  if (content.personnel?.organization) {
+    remotePersonnelData = content.personnel;
     if (!structureView.hidden) {
       renderPyramid();
     }
   }
 }
 
+async function syncNocoBaseContent() {
+  const nocobaseContent = await loadNocoBaseContent();
+  if (!nocobaseContent) {
+    return;
+  }
+  cacheNocoBaseContent(nocobaseContent);
+  applyEditableContentBundle(nocobaseContent, "nocobase");
+}
+
+async function loadEditableContent() {
+  const cachedContent = shouldUseNocoBase() ? readCachedNocoBaseContent() : null;
+  if (cachedContent) {
+    applyEditableContentBundle(cachedContent, "cache");
+  } else {
+    applyEditableContentBundle(await loadStaticContent(), "json");
+  }
+
+  scheduleDeferredAssets();
+
+  if (shouldUseNocoBase()) {
+    syncNocoBaseContent();
+  }
+}
+
 function getPersonnelData() {
+  if (remotePersonnelData) {
+    return remotePersonnelData;
+  }
   try {
     const stored = localStorage.getItem("qipanPersonnelData");
     if (stored) {
       return JSON.parse(stored);
     }
   } catch {}
-  return remotePersonnelData || window.DEFAULT_PERSONNEL_DATA;
+  return window.DEFAULT_PERSONNEL_DATA;
 }
 
 function setActiveTab(page) {
@@ -319,6 +637,7 @@ function showHome() {
   structureView.hidden = true;
   pageNav.hidden = false;
   setActiveTab("area");
+  hydrateCardPreviewImages();
   closePanel();
 }
 
@@ -474,8 +793,9 @@ function openPosition(level, position) {
 }
 
 function renderPersonCard(person, options = {}) {
-  const photo = person.photo
-    ? `<img src="${person.photo}" alt="${person.name || person.title}照片" />`
+  const photoUrl = normalizePath(person.photo);
+  const photo = photoUrl
+    ? `<img src="${photoUrl}" alt="${person.name || person.title}照片" />`
     : `<span>照片</span>`;
   const phone = person.phone || "待录入";
   const name = person.name || "待录入";
@@ -526,6 +846,10 @@ backButton.addEventListener("click", showHome);
 structureBackButton.addEventListener("click", showHome);
 closeButton.addEventListener("click", closePanel);
 scrim.addEventListener("click", closePanel);
+adminLink.addEventListener("click", openAdminLogin);
+adminLoginForm.addEventListener("submit", handleAdminLoginSubmit);
+adminLoginClose.addEventListener("click", closeAdminLogin);
+adminLoginScrim.addEventListener("click", closeAdminLogin);
 
 fullscreenButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -543,6 +867,10 @@ document.addEventListener("keydown", (event) => {
       closePanel();
       return;
     }
+    if (!adminLoginPanel.hidden) {
+      closeAdminLogin();
+      return;
+    }
     if (!introView.hidden) {
       return;
     }
@@ -554,4 +882,5 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+configureAdminLink();
 loadEditableContent();
