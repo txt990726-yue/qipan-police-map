@@ -191,6 +191,66 @@ function normalizePath(value) {
   return path.replace(/^\/+/, "");
 }
 
+function normalizeMembers(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+  return String(value || "")
+    .split(/[、，,\n]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function normalizeDisplayPerson(person = {}, fallback = {}) {
+  return {
+    role: person.role || fallback.role || person.title || fallback.title || "待录入",
+    title: person.title || fallback.title || "",
+    name: person.name || fallback.name || "待录入",
+    phone: person.phone || fallback.phone || "待录入",
+    area: person.area || fallback.area || "",
+    duty: person.duty || fallback.duty || "",
+    photo: normalizePath(person.photo || fallback.photo || ""),
+    members: normalizeMembers(person.members?.length ? person.members : fallback.members)
+  };
+}
+
+function getRegionPeople(region = {}) {
+  const fallback = region.director || {};
+  const people = Array.isArray(region.directors) && region.directors.length ? region.directors : [fallback];
+  return people.map((person) => normalizeDisplayPerson(person, fallback));
+}
+
+function getPositionPeople(position = {}) {
+  const fallback = {
+    role: position.role || position.title,
+    title: position.title,
+    name: position.name,
+    phone: position.phone,
+    duty: position.duty,
+    photo: position.photo,
+    members: position.members
+  };
+  const people = Array.isArray(position.people) && position.people.length ? position.people : [fallback];
+  return people.map((person) => normalizeDisplayPerson(person, fallback));
+}
+
+function summarizePeopleNames(people = []) {
+  const names = people.map((person) => person.name).filter((name) => name && name !== "待录入");
+  if (!names.length) {
+    return "待录入";
+  }
+  return names.slice(0, 3).join("、") + (names.length > 3 ? `等${names.length}人` : "");
+}
+
 function setText(selector, value) {
   const element = document.querySelector(selector);
   if (element && value) {
@@ -200,6 +260,14 @@ function setText(selector, value) {
 
 function configureAdminLink() {
   if (!adminLink) {
+    return;
+  }
+
+  if (window.QIPAN_PORTABLE_ADMIN_URL) {
+    adminLink.href = window.QIPAN_PORTABLE_ADMIN_URL;
+    adminLink.target = "_self";
+    adminLink.removeAttribute("rel");
+    adminLink.title = "打开本机免安装维护后台";
     return;
   }
 
@@ -499,10 +567,19 @@ function applyRegionContent(regionContent) {
         return;
       }
       region.name = editableRegion.name || region.name;
+      const editableDirector = editableRegion.director || {};
+      const editableDirectors = Array.isArray(editableRegion.directors) ? editableRegion.directors : null;
+      if (editableDirectors?.length) {
+        region.directors = editableDirectors.map((person) => ({
+          ...person,
+          photo: normalizePath(person.photo)
+        }));
+      }
+      const primaryDirector = region.directors?.[0] || editableDirector;
       region.director = {
         ...region.director,
-        ...editableRegion.director,
-        photo: normalizePath(editableRegion.director?.photo || region.director.photo)
+        ...primaryDirector,
+        photo: normalizePath(primaryDirector.photo || editableDirector.photo || region.director.photo)
       };
     });
 
@@ -745,9 +822,10 @@ function renderPyramid() {
       button.className = "position-node";
       button.type = "button";
       button.dataset.positionId = position.id;
+      const people = getPositionPeople(position);
       button.innerHTML = `
         <span>${position.title}</span>
-        <strong>${position.name || "待录入"}</strong>
+        <strong>${summarizePeopleNames(people)}</strong>
       `;
       button.addEventListener("click", () => openPosition(level, position));
       positions.appendChild(button);
@@ -760,7 +838,7 @@ function renderPyramid() {
 
 function openMapRegion(regionId) {
   const region = currentMap.regions.find((item) => item.id === regionId);
-  const director = region.director;
+  const people = getRegionPeople(region);
 
   document.querySelectorAll(".hotspot").forEach((shape) => {
     shape.classList.toggle("is-active", shape.dataset.regionId === regionId);
@@ -771,7 +849,7 @@ function openMapRegion(regionId) {
 
   panelMapName.textContent = currentMap.title;
   panelTitle.textContent = region.name;
-  directorCard.innerHTML = renderPersonCard(director, { areaLabel: "负责区域", area: director.area });
+  directorCard.innerHTML = renderPeopleCards(people, { areaLabel: "负责区域", area: region.director?.area });
   directorPanel.hidden = false;
   scrim.hidden = false;
 }
@@ -783,38 +861,51 @@ function openPosition(level, position) {
 
   panelMapName.textContent = level.title;
   panelTitle.textContent = position.title;
-  directorCard.innerHTML = renderPersonCard(position, {
+  directorCard.innerHTML = renderPeopleCards(getPositionPeople(position), {
     areaLabel: "岗位职责",
     area: position.duty,
-    members: position.members
+    members: position.members,
+    role: position.title
   });
   directorPanel.hidden = false;
   scrim.hidden = false;
 }
 
+function renderPeopleCards(people, options = {}) {
+  const list = people?.length ? people : [normalizeDisplayPerson({}, options)];
+  return `
+    <div class="people-grid ${list.length === 1 ? "is-single" : ""}">
+      ${list.map((person) => renderPersonCard(person, options)).join("")}
+    </div>
+  `;
+}
+
 function renderPersonCard(person, options = {}) {
   const photoUrl = normalizePath(person.photo);
   const photo = photoUrl
-    ? `<img src="${photoUrl}" alt="${person.name || person.title}照片" />`
+    ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(person.name || person.title)}照片" />`
     : `<span>照片</span>`;
   const phone = person.phone || "待录入";
   const name = person.name || "待录入";
-  const duty = options.area || person.duty || person.area || "待录入";
-  const members = options.members?.length
-    ? `<div><dt>组员</dt><dd>${options.members.join("、")}</dd></div>`
+  const duty = person.duty || person.area || options.area || "待录入";
+  const memberList = normalizeMembers(person.members?.length ? person.members : options.members);
+  const members = memberList.length
+    ? `<div class="info-row info-row--long"><dt>组员</dt><dd>${escapeHtml(memberList.join("、"))}</dd></div>`
     : "";
 
   return `
-    <div class="director-photo">${photo}</div>
-    <div class="director-info">
-      <h3>${name}</h3>
-      <dl class="info-list">
-        <div><dt>职务</dt><dd>${person.role || person.title || "待录入"}</dd></div>
-        <div><dt>电话</dt><dd>${phone}</dd></div>
-        <div><dt>${options.areaLabel || "负责区域"}</dt><dd>${duty}</dd></div>
-        ${members}
-      </dl>
-    </div>
+    <article class="person-card">
+      <div class="director-photo">${photo}</div>
+      <div class="director-info">
+        <h3>${escapeHtml(name)}</h3>
+        <dl class="info-list">
+          <div class="info-row"><dt>职务</dt><dd>${escapeHtml(person.role || person.title || options.role || "待录入")}</dd></div>
+          <div class="info-row info-row--phone"><dt>电话</dt><dd>${escapeHtml(phone)}</dd></div>
+          <div class="info-row info-row--long"><dt>${escapeHtml(options.areaLabel || "负责区域")}</dt><dd>${escapeHtml(duty)}</dd></div>
+          ${members}
+        </dl>
+      </div>
+    </article>
   `;
 }
 
